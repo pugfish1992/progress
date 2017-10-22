@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       tools:parentTag="RelativeLayout">
+
+    <FrameLayout
+        android:id="@+id/fl_circle_bg"
+        android:background="@drawable/circular_bg"
+        android:layout_width="@dimen/work_card_view_circle_small_size"
+        android:layout_height="@dimen/work_card_view_circle_small_size"
+        android:layout_marginTop="@dimen/work_card_view_circle_top_space"
+        android:layout_marginRight="@dimen/work_card_view_circle_right_space"
+        android:layout_marginEnd="@dimen/work_card_view_circle_right_space"
+        android:layout_marginLeft="@dimen/work_card_view_left_space"
+        android:layout_marginStart="@dimen/work_card_view_left_space">
+
+        <TextView
+            android:id="@+id/txt_circle_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/work_card_view_circle_small_text_size"/>
+
+        <ImageView
+            android:id="@+id/img_circle_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_check"
+            android:padding="@dimen/work_card_view_circle_small_icon_padding"/>
+        
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/work_card_view_contents_top_space"
+        android:layout_marginRight="@dimen/work_card_view_right_space"
+        android:layout_marginEnd="@dimen/work_card_view_right_space"
+        android:layout_toRightOf="@+id/fl_circle_bg"
+        android:layout_toEndOf="@+id/fl_circle_bg"
+        android:layout_marginBottom="@dimen/work_card_view_bottom_space">
+
+        <!-- Title -->
+        <FrameLayout
+            android:id="@+id/fl_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/work_card_view_title_bottom_space">
+            <!-- Active Title -->
+            <TextView
+                android:id="@+id/txt_active_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/WorkCardViewActiveTitleAppearance"
+                android:text="Work Title"/>
+            <!-- Inactive Title -->
+            <TextView
+                android:id="@+id/txt_inactive_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/WorkCardViewInactiveTitleAppearance"/>
+        </FrameLayout>
+
+        <!-- Sub Title -->
+        <FrameLayout
+            android:id="@+id/fl_sub_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/work_card_view_sub_title_bottom_space">
+            <!-- Active Sub Title -->
+            <TextView
+                android:id="@+id/txt_active_sub_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/WorkCardViewActiveSubTitleAppearance"
+                android:text="Summary if needed..."/>
+            <!-- Inactive Sub Title -->
+            <TextView
+                android:id="@+id/txt_inactive_sub_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/WorkCardViewInactiveSubTitleAppearance"/>
+        </FrameLayout>
+
+        <!-- Expandable contents -->
+        <FrameLayout
+            android:id="@+id/fl_expandable_contents_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/work_card_view_expandable_contents_container_top_space"
+            android:paddingBottom="@dimen/work_card_view_expandable_contents_container_bottom_space">
+
+            <!-- Contents (when expanded) -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_expanded_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:id="@+id/ll_expanded_contents_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+            </android.support.v7.widget.CardView>
+
+            <!-- Collapsed content -->
+            <TextView
+                android:id="@+id/txt_collapsed_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</merge>

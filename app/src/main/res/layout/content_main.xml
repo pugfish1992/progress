@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
+    android:id="@+id/rl_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,13 +10,49 @@
     tools:context="com.pugfish1992.progress.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    <com.pugfish1992.progress.component.WorkCardView
+    android:id="@+id/wkv"
+    android:layout_marginTop="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/expand_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="expand"/>
+
+        <Button
+            android:id="@+id/activate_circle_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="activate circle"/>
+
+        <Button
+            android:id="@+id/show_circle_icon_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="show circle icon"/>
+
+        <Button
+            android:id="@+id/activate_title_and_sub_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="activate title and sub title"/>
+
+        <Button
+            android:id="@+id/toggle_all_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="toggle all"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

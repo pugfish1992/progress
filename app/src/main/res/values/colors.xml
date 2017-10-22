@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#283238</color>
+    <color name="colorPrimaryDark">#22272b</color>
+    <color name="colorAccent">#00BFA5</color>
+
+    <!-- WORK CARD VIEW -->
+
+    <!-- Title -->
+    <color name="work_card_view_active_title">#212121</color>
+    <color name="work_card_view_inactive_title">#616161</color>
+    <!-- Sub Title -->
+    <color name="work_card_view_active_sub_title">#555555</color>
+    <color name="work_card_view_inactive_sub_title">#949494</color>
+    <!-- Circle (bg) -->
+    <color name="work_card_view_active_circle_background">@color/colorAccent</color>
+    <color name="work_card_view_inactive_circle_background">#BDBDBD</color>
+    <!-- Circle (text label) -->
+    <color name="work_card_view_circle_text_label_tint">#FFFFFF</color>
+    <!-- Circle (icon label) -->
+    <color name="work_card_view_circle_icon_label_tint">#FFFFFF</color>
+    <!-- Connection Line -->
+    <color name="work_card_view_connection_line">#BDBDBD</color>
+
 </resources>

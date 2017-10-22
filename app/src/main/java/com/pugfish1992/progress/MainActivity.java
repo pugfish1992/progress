@@ -2,7 +2,6 @@ package com.pugfish1992.progress;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+
+import com.pugfish1992.progress.component.WorkCardView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,15 +25,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -40,7 +33,63 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        final WorkCardView workCardView = (WorkCardView) findViewById(R.id.wkv);
+        workCardView.setTitle("Pugfish 1992");
+        workCardView.setSubTitle("pagufish.on.github@gmail.com");
+        workCardView.setCircleNumber(10);
+        workCardView.addExpandedContentView(R.layout.item_comment);
+        workCardView.setRootOfTransition((ViewGroup) findViewById(R.id.rl_root));
+
+        findViewById(R.id.expand_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workCardView.setExpanded(!workCardView.isExpanded(), true, 300);
+            }
+        });
+
+        findViewById(R.id.activate_circle_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workCardView.setCircleActive(!workCardView.isCircleActive(), true, 400);
+            }
+        });
+
+        findViewById(R.id.show_circle_icon_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon(), true, 400);
+            }
+        });
+
+        findViewById(R.id.activate_title_and_sub_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workCardView.setAreTitleAndSubTitleActive(!workCardView.areTitleAndSubTitleActive(), true, 400);
+            }
+        });
+
+        findViewById(R.id.toggle_all_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workCardView.beginBatchedStateChanges();
+                workCardView.setExpanded(!workCardView.isExpanded());
+                workCardView.setCircleActive(!workCardView.isCircleActive());
+                workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon());
+                workCardView.setAreTitleAndSubTitleActive(!workCardView.areTitleAndSubTitleActive());
+                workCardView.endBatchedStateChangesWithAnimation(500);
+            }
+        });
     }
+
+    int currentColor;
 
     @Override
     public void onBackPressed() {

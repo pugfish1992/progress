@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- WORK CARD VIEW -->
+    <string name="work_card_view_active_text_font_family">sans-serif-medium</string>
+    <string name="work_card_view_inactive_text_font_family">sans-serif</string>
+
 </resources>

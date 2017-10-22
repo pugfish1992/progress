@@ -5,4 +5,40 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    
+    <!-- WORK CARD VIEW -->
+
+    <!-- Whole -->
+    <dimen name="work_card_view_left_space">24dp</dimen>
+    <dimen name="work_card_view_right_space">24dp</dimen>
+    <dimen name="work_card_view_bottom_space">40dp</dimen>
+    <dimen name="work_card_view_contents_top_space">8dp</dimen>
+    <dimen name="work_card_view_circle_top_space">4dp</dimen>
+
+    <!-- Title -->
+    <dimen name="work_card_view_title_size">14sp</dimen>
+    <dimen name="work_card_view_title_bottom_space">2dp</dimen>
+
+    <!-- Sub Title -->
+    <dimen name="work_card_view_sub_title_size">12sp</dimen>
+    <dimen name="work_card_view_sub_title_bottom_space">2dp</dimen>
+
+    <!-- Circle -->
+    <dimen name="work_card_view_circle_right_space">12dp</dimen>
+    <dimen name="work_card_view_circle_regular_size">40dp</dimen>
+    <dimen name="work_card_view_circle_regular_text_size">16sp</dimen>
+    <dimen name="work_card_view_circle_regular_icon_padding">8dp</dimen>
+    <dimen name="work_card_view_circle_small_size">24dp</dimen>
+    <dimen name="work_card_view_circle_small_text_size">12sp</dimen>
+    <dimen name="work_card_view_circle_small_icon_padding">2dp</dimen>
+
+    <!-- Content View Container -->
+    <dimen name="work_card_view_expandable_contents_container_top_space">16dp</dimen>
+    <dimen name="work_card_view_expandable_contents_container_bottom_space">8dp</dimen>
+
+    <!-- Connection Line -->
+    <dimen name="work_card_view_connection_line_width">1dp</dimen>
+    <dimen name="work_card_view_connection_line_top_space">8dp</dimen>
+    <dimen name="work_card_view_connection_line_bottom_space">4dp</dimen>
+    
 </resources>

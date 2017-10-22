@@ -16,5 +16,32 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    
+    <!-- WORK CARD VIEW -->
+
+    <!-- Active Title -->
+    <style name="WorkCardViewActiveTitleAppearance">
+        <item name="android:textColor">@color/work_card_view_active_title</item>
+        <item name="android:fontFamily">@string/work_card_view_active_text_font_family</item>
+        <item name="android:textSize">@dimen/work_card_view_title_size</item>
+    </style>
+    <!-- Inactive Title -->
+    <style name="WorkCardViewInactiveTitleAppearance">
+        <item name="android:fontFamily">@string/work_card_view_inactive_text_font_family</item>
+        <item name="android:textColor">@color/work_card_view_inactive_title</item>
+        <item name="android:textSize">@dimen/work_card_view_title_size</item>
+    </style>
+    <!-- Active Sub Title -->
+    <style name="WorkCardViewActiveSubTitleAppearance">
+        <item name="android:fontFamily">@string/work_card_view_active_text_font_family</item>
+        <item name="android:textColor">@color/work_card_view_active_sub_title</item>
+        <item name="android:textSize">@dimen/work_card_view_sub_title_size</item>
+    </style>
+    <!-- Inactive Sub Title -->
+    <style name="WorkCardViewInactiveSubTitleAppearance">
+        <item name="android:fontFamily">@string/work_card_view_inactive_text_font_family</item>
+        <item name="android:textColor">@color/work_card_view_inactive_sub_title</item>
+        <item name="android:textSize">@dimen/work_card_view_sub_title_size</item>
+    </style>
 
 </resources>
