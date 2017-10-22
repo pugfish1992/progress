@@ -19,7 +19,6 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -515,16 +514,16 @@ public class WorkCardView extends RelativeLayout {
         // Animation which use TransitionManager must be executed
         // after execute the other kinds of animation
         if ((flags & ANIM_EXPAND) != 0) {
-            setExpanded(true, true, duration, startDelay, null, false);
+            setExpanded(true, true, duration, startDelay, transitionListener, false);
         }
         if ((flags & ANIM_COLLAPSE) != 0) {
-            setExpanded(false, true, duration, startDelay, null, false);
+            setExpanded(false, true, duration, startDelay, transitionListener, false);
         }
         if ((flags & ANIM_SHOW_CIRCLE_ICON) != 0) {
-            setShowCircleIcon(true, true, duration, startDelay, null, false);
+            setShowCircleIcon(true, true, duration, startDelay, transitionListener, false);
         }
         if ((flags & ANIM_HIDE_CIRCLE_ICON) != 0) {
-            setShowCircleIcon(false, true, duration, startDelay, null, false);
+            setShowCircleIcon(false, true, duration, startDelay, transitionListener, false);
         }
     }
 
