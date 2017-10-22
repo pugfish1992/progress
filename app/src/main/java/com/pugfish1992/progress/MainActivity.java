@@ -1,7 +1,9 @@
 package com.pugfish1992.progress;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.transition.Transition;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,8 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.pugfish1992.progress.component.WorkCardView;
+import com.pugfish1992.progress.utils.TransitionUtils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,7 +55,12 @@ public class MainActivity extends AppCompatActivity
         findViewById(R.id.expand_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                workCardView.setExpanded(!workCardView.isExpanded(), true, 300, 0);
+                workCardView.setExpanded(!workCardView.isExpanded(), true, 300, 0,  new TransitionUtils.TransitionListenerAdapter() {
+                    @Override
+                    public void onTransitionEnd(@NonNull Transition transition) {
+                        Toast.makeText(MainActivity.this, "Expand animation has Finished!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -65,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         findViewById(R.id.show_circle_icon_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon(), true, 400, 0);
+                workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon(), true, 400, 0, null);
             }
         });
 
@@ -84,7 +93,12 @@ public class MainActivity extends AppCompatActivity
                 workCardView.setCircleActive(!workCardView.isCircleActive());
                 workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon());
                 workCardView.setAreTitleAndSubTitleActive(!workCardView.areTitleAndSubTitleActive());
-                workCardView.endBatchedStateChangesWithAnimation(500, 500);
+                workCardView.endBatchedStateChangesWithAnimation(500, 500, new TransitionUtils.TransitionListenerAdapter() {
+                    @Override
+                    public void onTransitionEnd(@NonNull Transition transition) {
+                        Toast.makeText(MainActivity.this, "Transition has Finished!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
