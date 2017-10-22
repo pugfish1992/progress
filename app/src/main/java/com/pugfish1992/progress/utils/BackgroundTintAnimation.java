@@ -1,4 +1,4 @@
-package com.pugfish1992.progress.animation;
+package com.pugfish1992.progress.utils;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;

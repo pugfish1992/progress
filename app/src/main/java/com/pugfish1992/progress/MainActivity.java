@@ -51,28 +51,28 @@ public class MainActivity extends AppCompatActivity
         findViewById(R.id.expand_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                workCardView.setExpanded(!workCardView.isExpanded(), true, 300);
+                workCardView.setExpanded(!workCardView.isExpanded(), true, 300, 0);
             }
         });
 
         findViewById(R.id.activate_circle_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                workCardView.setCircleActive(!workCardView.isCircleActive(), true, 400);
+                workCardView.setCircleActive(!workCardView.isCircleActive(), true, 400, 0);
             }
         });
 
         findViewById(R.id.show_circle_icon_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon(), true, 400);
+                workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon(), true, 400, 0);
             }
         });
 
         findViewById(R.id.activate_title_and_sub_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                workCardView.setAreTitleAndSubTitleActive(!workCardView.areTitleAndSubTitleActive(), true, 400);
+                workCardView.setAreTitleAndSubTitleActive(!workCardView.areTitleAndSubTitleActive(), true, 400, 0);
             }
         });
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
                 workCardView.setCircleActive(!workCardView.isCircleActive());
                 workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon());
                 workCardView.setAreTitleAndSubTitleActive(!workCardView.areTitleAndSubTitleActive());
-                workCardView.endBatchedStateChangesWithAnimation(500);
+                workCardView.endBatchedStateChangesWithAnimation(500, 500);
             }
         });
     }

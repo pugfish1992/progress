@@ -4,6 +4,7 @@ package com.pugfish1992.progress.component;
  * Created by daichi on 10/22/17.
  */
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,6 +13,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.transition.AutoTransition;
 import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
@@ -28,8 +30,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pugfish1992.progress.R;
-import com.pugfish1992.progress.animation.BackgroundTintAnimation;
-import com.pugfish1992.progress.animation.CrossFadeAnimation;
+import com.pugfish1992.progress.utils.BackgroundTintAnimation;
+import com.pugfish1992.progress.utils.CrossFadeAnimation;
+import com.pugfish1992.progress.utils.TransitionUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -137,10 +140,10 @@ public class WorkCardView extends RelativeLayout {
 
         // # INITIALIZE STATUS
 
-        setExpanded(false, false, 0, true);
-        setCircleActive(false, false, 0, true);
-        setShowCircleIcon(false, false, 0, true);
-        setAreTitleAndSubTitleActive(false, false, 0, true);
+        setExpanded(false, false, 0, 0, true);
+        setCircleActive(false, false, 0, 0, true);
+        setShowCircleIcon(false, false, 0, 0, true);
+        setAreTitleAndSubTitleActive(false, false, 0, 0, true);
     }
 
     /**
@@ -282,11 +285,28 @@ public class WorkCardView extends RelativeLayout {
      */
     private ViewGroup mRootOfTransition;
 
+    private boolean mHasDelayedTransitionAlreadyBegun = false;
+
     public void setRootOfTransition(ViewGroup rootOfTransition) {
         mRootOfTransition = rootOfTransition;
     }
 
-    public void setExpanded(boolean expanded, boolean animate, long duration, boolean enforceUpdate) {
+    private void beginDelayedAutoTransition(long duration, long startDelay) {
+        if (mHasDelayedTransitionAlreadyBegun) return;
+        Transition transition = new AutoTransition();
+        transition.setDuration(duration);
+        transition.setStartDelay(startDelay);
+        transition.addListener(new TransitionUtils.TransitionListenerAdapter() {
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                mHasDelayedTransitionAlreadyBegun = false;
+            }
+        });
+        TransitionManager.beginDelayedTransition(mRootOfTransition, transition);
+        mHasDelayedTransitionAlreadyBegun = true;
+    }
+
+    public void setExpanded(boolean expanded, boolean animate, long duration, long startDelay, boolean enforceUpdate) {
         if (mIsInBatchedStateChanges) {
             mReservedIsExpanded = expanded;
             return;
@@ -297,9 +317,7 @@ public class WorkCardView extends RelativeLayout {
 
         if (animate) {
             if (mRootOfTransition != null) {
-                Transition transition = new AutoTransition();
-                transition.setDuration(duration);
-                TransitionManager.beginDelayedTransition(mRootOfTransition, transition);
+                beginDelayedAutoTransition(duration, startDelay);
             } else {
                 throw new IllegalStateException(
                         "Specify a root view group before call setExpanded()");
@@ -330,15 +348,15 @@ public class WorkCardView extends RelativeLayout {
         }
     }
 
-    public void setExpanded(boolean expanded, boolean animate, long duration) {
-        setExpanded(expanded, animate, duration, false);
+    public void setExpanded(boolean expanded, boolean animate, long duration, long startDelay) {
+        setExpanded(expanded, animate, duration, startDelay, false);
     }
 
     public void setExpanded(boolean expanded) {
-        setExpanded(expanded, false, 0, false);
+        setExpanded(expanded, false, 0, 0, false);
     }
 
-    public void setShowCircleIcon(boolean showCircleIcon, boolean animate, long duration, boolean enforceUpdate) {
+    public void setShowCircleIcon(boolean showCircleIcon, boolean animate, long duration, long startDelay, boolean enforceUpdate) {
         if (mIsInBatchedStateChanges) {
             mReservedShowCircleIcon = showCircleIcon;
             return;
@@ -349,12 +367,7 @@ public class WorkCardView extends RelativeLayout {
 
         if (animate) {
             if (mRootOfTransition != null) {
-                Transition transition = new AutoTransition();
-                transition.setDuration(duration);
-                // Avoid unnecessary transitions
-                transition.addTarget(mCircleTextView);
-                transition.addTarget(mCircleIconView);
-                TransitionManager.beginDelayedTransition(mRootOfTransition, transition);
+                beginDelayedAutoTransition(duration, startDelay);
             } else {
                 throw new IllegalStateException(
                         "Specify a root view group before call setExpanded()");
@@ -365,15 +378,15 @@ public class WorkCardView extends RelativeLayout {
         mCircleIconView.setVisibility(mShowCircleIcon ? VISIBLE : INVISIBLE);
     }
 
-    public void setShowCircleIcon(boolean showCircleIcon, boolean animate, long duration) {
-        setShowCircleIcon(showCircleIcon, animate, duration, false);
+    public void setShowCircleIcon(boolean showCircleIcon, boolean animate, long duration, long startDelay) {
+        setShowCircleIcon(showCircleIcon, animate, duration, startDelay, false);
     }
 
     public void setShowCircleIcon(boolean showCircleIcon) {
-        setShowCircleIcon(showCircleIcon, false, 0, false);
+        setShowCircleIcon(showCircleIcon, false, 0, 0, false);
     }
 
-    public void setCircleActive(boolean circleActive, boolean animate, long duration, boolean enforceUpdate) {
+    public void setCircleActive(boolean circleActive, boolean animate, long duration, long startDelay, boolean enforceUpdate) {
         if (mIsInBatchedStateChanges) {
             mReservedIsCircleActive = circleActive;
             return;
@@ -386,9 +399,10 @@ public class WorkCardView extends RelativeLayout {
         mIsCircleActive = circleActive;
 
         if (animate) {
-            BackgroundTintAnimation.create(mCircleBgLayout, currentColor, nextColor)
-                    .setDuration(duration)
-                    .start();
+            ValueAnimator animator = BackgroundTintAnimation.create(mCircleBgLayout, currentColor, nextColor);
+            animator.setDuration(duration);
+            animator.setStartDelay(startDelay);
+            animator.start();
         } else {
             mCircleBgLayout.getBackground().setColorFilter(
                     nextColor,
@@ -396,15 +410,15 @@ public class WorkCardView extends RelativeLayout {
         }
     }
 
-    public void setCircleActive(boolean circleActive, boolean animate, long duration) {
-        setCircleActive(circleActive, animate, duration, false);
+    public void setCircleActive(boolean circleActive, boolean animate, long duration, long startDelay) {
+        setCircleActive(circleActive, animate, duration, startDelay, false);
     }
 
     public void setCircleActive(boolean circleActive) {
-        setCircleActive(circleActive, false, 0, false);
+        setCircleActive(circleActive, false, 0, 0, false);
     }
 
-    public void setAreTitleAndSubTitleActive(boolean areTitleAndSubTitleActive, boolean animate, long duration, boolean enforceUpdate) {
+    public void setAreTitleAndSubTitleActive(boolean areTitleAndSubTitleActive, boolean animate, long duration, long startDelay, boolean enforceUpdate) {
         if (mIsInBatchedStateChanges) {
             mReservedAreTitleAndSubTitleActive = areTitleAndSubTitleActive;
             return;
@@ -415,11 +429,11 @@ public class WorkCardView extends RelativeLayout {
 
         if (animate) {
             if (mAreTitleAndSubTitleActive) {
-                CrossFadeAnimation.animate(mInactiveTitleView, mActiveTitleView, duration);
-                CrossFadeAnimation.animate(mInactiveSubTitleView, mActiveSubTitleView, duration);
+                CrossFadeAnimation.animate(mInactiveTitleView, mActiveTitleView, duration, startDelay);
+                CrossFadeAnimation.animate(mInactiveSubTitleView, mActiveSubTitleView, duration, startDelay);
             } else {
-                CrossFadeAnimation.animate(mActiveTitleView, mInactiveTitleView, duration);
-                CrossFadeAnimation.animate(mActiveSubTitleView, mInactiveSubTitleView, duration);
+                CrossFadeAnimation.animate(mActiveTitleView, mInactiveTitleView, duration, startDelay);
+                CrossFadeAnimation.animate(mActiveSubTitleView, mInactiveSubTitleView, duration, startDelay);
             }
 
         } else {
@@ -437,12 +451,12 @@ public class WorkCardView extends RelativeLayout {
         }
     }
 
-    public void setAreTitleAndSubTitleActive(boolean areTitleAndSubTitleActive, boolean animate, long duration) {
-        setAreTitleAndSubTitleActive(areTitleAndSubTitleActive, animate, duration, false);
+    public void setAreTitleAndSubTitleActive(boolean areTitleAndSubTitleActive, boolean animate, long duration, long startDelay) {
+        setAreTitleAndSubTitleActive(areTitleAndSubTitleActive, animate, duration, startDelay, false);
     }
 
     public void setAreTitleAndSubTitleActive(boolean areTitleAndSubTitleActive) {
-        setAreTitleAndSubTitleActive(areTitleAndSubTitleActive, false, 0, false);
+        setAreTitleAndSubTitleActive(areTitleAndSubTitleActive, false, 0, 0, false);
     }
 
     @Retention(RetentionPolicy.SOURCE)
@@ -464,35 +478,35 @@ public class WorkCardView extends RelativeLayout {
 
     /**
      * Use this method for complexity animation instead of calling some certain methods (
-     * {@link WorkCardView#setExpanded(boolean, boolean, long)},
-     * {@link WorkCardView#setCircleActive(boolean, boolean, long)}, etc...) individually.
+     * {@link WorkCardView#setExpanded(boolean, boolean, long, long)},
+     * {@link WorkCardView#setCircleActive(boolean, boolean, long, long)}, etc...) individually.
      */
-    public void applyStateChangesWithAnimation(@AnimationFlag int flags, long duration) {
+    public void applyStateChangesWithAnimation(@AnimationFlag int flags, long duration, long startDelay) {
         if ((flags & ANIM_ACTIVATE_CIRCLE) != 0) {
-            setCircleActive(true, true, duration, false);
+            setCircleActive(true, true, duration, startDelay, false);
         }
         if ((flags & ANIM_INACTIVATE_CIRCLE) != 0) {
-            setCircleActive(false, true, duration, false);
+            setCircleActive(false, true, duration, startDelay, false);
         }
         if ((flags & ANIM_ACTIVATE_TITLE_SUBTITLE) != 0) {
-            setAreTitleAndSubTitleActive(true, true, duration, false);
+            setAreTitleAndSubTitleActive(true, true, duration, startDelay, false);
         }
         if ((flags & ANIM_INACTIVATE_TITLE_SUBTITLE) != 0) {
-            setAreTitleAndSubTitleActive(false, true, duration, false);
+            setAreTitleAndSubTitleActive(false, true, duration, startDelay, false);
         }
         // Animation which use TransitionManager must be executed
         // after execute the other kinds of animation
         if ((flags & ANIM_EXPAND) != 0) {
-            setExpanded(true, true, duration, false);
+            setExpanded(true, true, duration, startDelay, false);
         }
         if ((flags & ANIM_COLLAPSE) != 0) {
-            setExpanded(false, true, duration, false);
+            setExpanded(false, true, duration, startDelay, false);
         }
         if ((flags & ANIM_SHOW_CIRCLE_ICON) != 0) {
-            setShowCircleIcon(true, true, duration, false);
+            setShowCircleIcon(true, true, duration, startDelay, false);
         }
         if ((flags & ANIM_HIDE_CIRCLE_ICON) != 0) {
-            setShowCircleIcon(false, true, duration, false);
+            setShowCircleIcon(false, true, duration, startDelay, false);
         }
     }
 
@@ -503,7 +517,7 @@ public class WorkCardView extends RelativeLayout {
     private boolean mIsInBatchedStateChanges = false;
 
     /**
-     * Make sure to call {@link WorkCardView#endBatchedStateChangesWithAnimation(long)} after call this method.
+     * Make sure to call {@link WorkCardView#endBatchedStateChangesWithAnimation(long, long)} after call this method.
      */
     public void beginBatchedStateChanges() {
         mReservedIsExpanded = isExpanded();
@@ -515,19 +529,19 @@ public class WorkCardView extends RelativeLayout {
 
     /**
      * Convenience method for creating a flag used as a first parameter of
-     * {@link WorkCardView#applyStateChangesWithAnimation(int, long)} automatically.
+     * {@link WorkCardView#applyStateChangesWithAnimation(int, long, long)} automatically.
      * Make sure to call {@link WorkCardView#beginBatchedStateChanges()} before call this method.
      * Use this method for complexity animation instead of calling some certain methods (
-     * {@link WorkCardView#setExpanded(boolean, boolean, long)},
-     * {@link WorkCardView#setCircleActive(boolean, boolean, long)}, etc...) individually.
+     * {@link WorkCardView#setExpanded(boolean, boolean, long, long)},
+     * {@link WorkCardView#setCircleActive(boolean, boolean, long, long)}, etc...) individually.
      */
-    public void endBatchedStateChangesWithAnimation(long animationDuration) {
+    public void endBatchedStateChangesWithAnimation(long animationDuration, long startAnimationDelay) {
         @AnimationFlag int flag = 0;
         flag |= mReservedIsExpanded ? WorkCardView.ANIM_EXPAND : WorkCardView.ANIM_COLLAPSE;
         flag |= mReservedIsCircleActive ? WorkCardView.ANIM_ACTIVATE_CIRCLE : WorkCardView.ANIM_INACTIVATE_CIRCLE;
         flag |= mReservedShowCircleIcon ? WorkCardView.ANIM_SHOW_CIRCLE_ICON : WorkCardView.ANIM_HIDE_CIRCLE_ICON;
         flag |= mReservedAreTitleAndSubTitleActive ? WorkCardView.ANIM_ACTIVATE_TITLE_SUBTITLE : WorkCardView.ANIM_INACTIVATE_TITLE_SUBTITLE;
         mIsInBatchedStateChanges = false;
-        applyStateChangesWithAnimation(flag, animationDuration);
+        applyStateChangesWithAnimation(flag, animationDuration, startAnimationDelay);
     }
 }
