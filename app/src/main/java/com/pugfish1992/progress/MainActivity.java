@@ -45,65 +45,10 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        final WorkCardView workCardView = (WorkCardView) findViewById(R.id.wkv);
-        workCardView.setTitle("Pugfish 1992");
-        workCardView.setSubTitle("pagufish.on.github@gmail.com");
-        workCardView.setCircleNumber(10);
-        workCardView.addExpandedContentView(R.layout.item_comment);
-        workCardView.setRootOfTransition((ViewGroup) findViewById(R.id.rl_root));
-
-        findViewById(R.id.expand_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                workCardView.setExpanded(!workCardView.isExpanded(), true, 300, 0,  new TransitionUtils.TransitionListenerAdapter() {
-                    @Override
-                    public void onTransitionEnd(@NonNull Transition transition) {
-                        Toast.makeText(MainActivity.this, "Expand animation has Finished!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-        findViewById(R.id.activate_circle_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                workCardView.setCircleActive(!workCardView.isCircleActive(), true, 400, 0);
-            }
-        });
-
-        findViewById(R.id.show_circle_icon_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon(), true, 400, 0, null);
-            }
-        });
-
-        findViewById(R.id.activate_title_and_sub_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                workCardView.setAreTitleAndSubTitleActive(!workCardView.areTitleAndSubTitleActive(), true, 400, 0);
-            }
-        });
-
-        findViewById(R.id.toggle_all_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                workCardView.beginBatchedStateChanges();
-                workCardView.setExpanded(!workCardView.isExpanded());
-                workCardView.setCircleActive(!workCardView.isCircleActive());
-                workCardView.setShowCircleIcon(!workCardView.isShowCircleIcon());
-                workCardView.setAreTitleAndSubTitleActive(!workCardView.areTitleAndSubTitleActive());
-                workCardView.endBatchedStateChangesWithAnimation(500, 500, new TransitionUtils.TransitionListenerAdapter() {
-                    @Override
-                    public void onTransitionEnd(@NonNull Transition transition) {
-                        Toast.makeText(MainActivity.this, "Transition has Finished!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_fragment_container, new WorksFragment(), null)
+                .commit();
     }
-
-    int currentColor;
 
     @Override
     public void onBackPressed() {

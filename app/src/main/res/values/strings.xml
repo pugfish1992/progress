@@ -10,4 +10,7 @@
     <string name="work_card_view_active_text_font_family">sans-serif-medium</string>
     <string name="work_card_view_inactive_text_font_family">sans-serif</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

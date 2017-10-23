@@ -131,14 +131,6 @@ public class WorkCardView extends RelativeLayout {
         mConnectionLineBottomSpace = getResources().getDimensionPixelSize(
                 R.dimen.work_card_view_connection_line_bottom_space);
 
-        // # Add ripple-effect to myself
-        // # See -> https://stackoverflow.com/questions/37987732/programatically-set-selectableitembackground-on-android-view
-
-        TypedValue outValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
-        this.setBackgroundResource(outValue.resourceId);
-        this.setClickable(true);
-
         // # INITIALIZE STATUS
 
         setExpanded(false, false, 0, 0, null, true);
