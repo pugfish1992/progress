@@ -1,12 +1,13 @@
 package com.pugfish1992.progress;
 
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.transition.Transition;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.pugfish1992.progress.component.WorkCardView;
 import com.pugfish1992.progress.utils.TransitionUtils;
@@ -17,7 +18,7 @@ import com.pugfish1992.progress.utils.TransitionUtils;
 
 public class WorkCardViewHolder extends RecyclerView.ViewHolder {
 
-    private WorkCardView mWorkCardView;
+    WorkCardView workCardView;
     private PartialAnimatableAdapter mPartialAnimatableAdapter;
 
     public static WorkCardViewHolder createWithView(ViewGroup parent, PartialAnimatableAdapter partialAnimatableAdapter) {
@@ -28,23 +29,21 @@ public class WorkCardViewHolder extends RecyclerView.ViewHolder {
 
     public WorkCardViewHolder(WorkCardView view, PartialAnimatableAdapter partialAnimatableAdapter) {
         super(view);
-        mWorkCardView = view;
+        workCardView = view;
         mPartialAnimatableAdapter = partialAnimatableAdapter;
         init();
     }
 
     private void init() {
-        mWorkCardView.setRootOfTransition(mPartialAnimatableAdapter.getRootOfTransition());
-        mWorkCardView.addExpandedContentView(R.layout.item_comment);
-
-        mWorkCardView.setOnClickListener(new View.OnClickListener() {
+        workCardView.setRootOfTransition(mPartialAnimatableAdapter.getRootOfTransition());
+        workCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mWorkCardView.beginBatchedStateChanges();
-                mWorkCardView.setExpanded(!mWorkCardView.isExpanded());
-                mWorkCardView.setCircleActive(!mWorkCardView.isCircleActive());
-                mWorkCardView.setAreTitleAndSubTitleActive(!mWorkCardView.areTitleAndSubTitleActive());
-                mWorkCardView.endBatchedStateChangesWithAnimation(400, 0,
+                workCardView.beginBatchedStateChanges();
+                workCardView.setExpanded(!workCardView.isExpanded());
+                workCardView.setCircleActive(!workCardView.isCircleActive());
+                workCardView.setAreTitleAndSubTitleActive(!workCardView.areTitleAndSubTitleActive());
+                workCardView.endBatchedStateChangesWithAnimation(400, 0,
                         new TransitionUtils.TransitionListenerAdapter() {
                             @Override
                             public void onTransitionStart(@NonNull Transition transition) {
@@ -66,8 +65,41 @@ public class WorkCardViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(String title, String sub, int position) {
-        mWorkCardView.setTitle(title);
-        mWorkCardView.setSubTitle(sub);
-        mWorkCardView.setCircleNumber(position + 1);
+        workCardView.setTitle(title);
+        workCardView.setSubTitle(sub);
+        workCardView.setCircleNumber(position + 1);
+    }
+
+    /* ------------------------------------------------------------------------------- *
+     * VH ATTACHED TO A COMMENT VIEW (NOT FOR RECYCLER VIEW)
+     * ------------------------------------------------------------------------------- */
+
+    public static class CommentVh {
+
+        static final int KEY_VH = 210497576;
+        @LayoutRes static final int LAYOUT_RES_ID = R.layout.item_comment;
+
+        final View commentView;
+        int id;
+        TextView comment;
+
+        public static CommentVh getCommentVhFromView(View view) {
+            Object tag = view.getTag(KEY_VH);
+            if (tag == null) {
+                throw new IllegalArgumentException("specified view does not have a CommentVh");
+            }
+            return (CommentVh) tag;
+        }
+
+        public CommentVh(View view) {
+            this.commentView = view;
+            view.setTag(KEY_VH, this);
+
+            comment = view.findViewById(R.id.comment);
+        }
+
+        public void bindData(int position) {
+
+        }
     }
 }

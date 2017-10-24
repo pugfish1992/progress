@@ -68,7 +68,7 @@
 
         <!-- Sub Title -->
         <FrameLayout
-            android:id="@+id/fl_sub_title_layout"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/work_card_view_sub_title_bottom_space">
